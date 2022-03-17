@@ -99,6 +99,30 @@ plane.geometry.setAttribute(
 );
 scene.add(plane);
 
+// Creating Stars
+
+const starGeometry = new THREE.BufferGeometry();
+const starMaterial = new THREE.PointsMaterial({
+  colors: 0xffffff,
+});
+
+const startVerticies = [];
+
+for (let index = 0; index < 10000; index++) {
+  const x = (Math.random() - 0.5) * 2000;
+  const y = (Math.random() - 0.5) * 2000;
+  const z = (Math.random() - 0.5) * 2000;
+  startVerticies.push(x, y, z);
+}
+
+starGeometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(startVerticies, 3)
+);
+
+const stars = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
+
 // Adding light into the scnce
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(0, -1, 1);
@@ -186,6 +210,8 @@ function animate() {
       },
     });
 
+    stars.rotation.x += 0.0005;
+
     // colors.setX(0, 0);
     // colors.needsUpdate = true;
 
@@ -198,6 +224,32 @@ function animate() {
 
   // plane.rotation.x += 0.01;
 }
+
+document.querySelector("#viewworkbtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  gsap.to("#containertxt", {
+    opacity: 0,
+  });
+
+  gsap.to(pespectiveCamera.position, {
+    z: 25,
+    ease: "power3.inOut",
+    duration: 2,
+  });
+
+  gsap.to(pespectiveCamera.rotation, {
+    x: 1.57,
+    ease: "power3.inOut",
+    duration: 2,
+  });
+  gsap.to(pespectiveCamera.position, {
+    y: 1000,
+    ease: "power3.in",
+    duration: 1.5,
+    delay: 2,
+  });
+});
+
 addEventListener("mousemove", (e) => {
   mouse.x = (e.clientX / innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / innerHeight) * 2 + 1;
