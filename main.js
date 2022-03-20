@@ -1,6 +1,8 @@
 import "./style.css";
 import * as THREE from "three";
 import * as dat from "dat.gui";
+import spaceImage from "./space.jpg";
+import galibImg from "./galib.jpeg";
 import gsap from "gsap";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
@@ -48,6 +50,9 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 
 document.body.appendChild(renderer.domElement);
+
+const spaceTexture = new THREE.TextureLoader().load(spaceImage);
+scene.background = spaceTexture;
 
 const planeGeometry = new THREE.PlaneGeometry(
   world.plane.width,
@@ -98,7 +103,19 @@ plane.geometry.setAttribute(
   new THREE.BufferAttribute(new Float32Array(colors), 3)
 );
 scene.add(plane);
+// galib texture
 
+const galibTexture = new THREE.TextureLoader().load(galibImg);
+
+const galib = new THREE.Mesh(
+  new THREE.BoxGeometry(50, 50, 40),
+  new THREE.MeshBasicMaterial({
+    map: galibTexture,
+  })
+);
+
+galib.position.set(5, 1100, 10);
+scene.add(galib);
 // Creating Stars
 
 const starGeometry = new THREE.BufferGeometry();
